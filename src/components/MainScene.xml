@@ -1,6 +1,31 @@
 <component name="MainScene" extends="Scene">
     <script type="text/brightscript" uri="MainScene.bs" />
     <children>
-        <Label id="welcome" translation="[96, 54]" />
+        <Poster
+            id="logo"
+            uri="pkg:/images/logo.jpg"
+            translation="[50, 50]"
+            width="250"
+            height="250"
+        />
+
+        <Group
+            id="thumbnail"
+            translation="[550, 600]"
+        >
+            <Rectangle
+                id="thumbnailBackground"
+                width="341"
+                height="192"
+                color="#FFFFFF"
+                opacity="0.1"
+            />
+            <Poster
+                id="thumbnailPoster"
+                width="341"
+                height="192"
+                uri="https://res.cloudinary.com/dmaxfkrjg/image/upload/v1724903259/indianajones-thumbnail_kjsxkt.png"
+            />
+        </Group>
     </children>
 </component>

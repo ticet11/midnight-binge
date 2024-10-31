@@ -1,6 +1,24 @@
+enum MovieCategory
+    Action = "Action"
+    Comedy = "Comedy"
+    Horror = "Horror"
+    Drama = "Drama"
+    Animation = "Animation"
+end enum
+
 sub init()
-    label = m.top.findNode("welcome")
-    label.text = "Hello from ya boi"
+    categories = m.top.CreateChild("ButtonGroup")
+    categories.translation = [50, 300]
+
+    categories.buttons = [
+        MovieCategory.Action,
+        MovieCategory.Animation,
+        MovieCategory.Comedy,
+        MovieCategory.Drama,
+        MovieCategory.Horror
+    ]
+
+    categories.setFocus(true)
 
     ' This is required to pass certification.
     ' Specified in section 3.2 of the Roku Certification Criteria.

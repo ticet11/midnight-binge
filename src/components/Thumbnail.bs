@@ -1,0 +1,8 @@
+sub init()
+    m.top.observeField("itemContent", "handleItemContentChange")
+end sub
+
+sub handleItemContentChange()
+    thumbnailPoster = m.top.findNode("thumbnailPoster")
+    thumbnailPoster.uri = m.top.itemContent.thumbnailUrl
+end sub

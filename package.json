@@ -1,10 +1,12 @@
 {
     "private": true,
     "version": "0.0.1",
-    "dependencies": {},
+    "dependencies": {
+        "roku-requests": "^1.2.0"
+    },
     "devDependencies": {
-        "brighterscript": "^0.67.8",
         "@rokucommunity/bslint": "^0.8.26",
+        "brighterscript": "^0.67.8",
         "brighterscript-formatter": "^1.7.6"
     },
     "scripts": {

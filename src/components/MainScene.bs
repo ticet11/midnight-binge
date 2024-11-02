@@ -7,10 +7,10 @@ enum MovieCategory
 end enum
 
 sub init()
-    categories = m.top.CreateChild("ButtonGroup")
-    categories.translation = [10, 306]
+    m.categories = m.top.CreateChild("ButtonGroup")
+    m.categories.translation = [10, 306]
 
-    categories.buttons = [
+    m.categories.buttons = [
         MovieCategory.Action,
         MovieCategory.Animation,
         MovieCategory.Comedy,
@@ -18,10 +18,72 @@ sub init()
         MovieCategory.Horror
     ]
 
-    categories.setFocus(true)
+    m.categories.SetFocus(true)
+
+    m.thumbnails = m.top.findNode("thumbnails")
+
+    loadCategory(MovieCategory.Action)
+
+    m.thumbnails.observeField("rowItemFocused", "handleThumbnailChange")
 
     ' This is required to pass certification.
     ' Specified in section 3.2 of the Roku Certification Criteria.
     ' Reference: https://developer.roku.com/docs/developer-program/certification/certification.md#3-performance
     m.top.signalBeacon("AppLaunchComplete")
 end sub
+
+sub loadCategory(category as string)
+    m.getDataTask = CreateObject("roSGNode", "GetDataTask")
+    m.getDataTask.categoryInput = category
+
+    m.getDataTask.observeField("output", "handleGetDataTaskOutput")
+
+    m.getDataTask.control = "RUN"
+end sub
+
+sub handleGetDataTaskOutput()
+    output = m.getDataTask.output
+    m.thumbnails.content = output
+
+    row = output.getChild(0)
+    firstMovie = row.getChild(0)
+
+    renderMovieShowcase(firstMovie)
+end sub
+
+sub handleThumbnailChange()
+    rowFocusedIndex = m.thumbnails.rowItemFocused[0]
+    itemIndexFocused = m.thumbnails.rowItemFocused[1]
+
+    row = m.thumbnails.content.getChild(rowFocusedIndex)
+    movieFocused = row.getChild(itemIndexFocused)
+
+    renderMovieShowcase(movieFocused)
+end sub
+
+sub renderMovieShowcase(movieContentNode as object)
+    titleLabel = m.top.findNode("movieShowcase__title")
+    titleLabel.text = movieContentNode.title
+
+    directedByLabel = m.top.findNode("movieShowcase__directedBy")
+    directedByLabel.text = `Directed by: ${movieContentNode.director}`
+
+    framePoster = m.top.findNode("movieShowcase__framePoster")
+    framePoster.uri = movieContentNode.frameUrl
+end sub
+
+function onKeyEvent(key as string, pressed as boolean) as boolean
+    if (not pressed)
+        return false
+    end if
+
+    if (key = "right")
+        ' Focus thumbnails
+        m.thumbnails.SetFocus(true)
+    else if (key = "left")
+        ' Focus categories
+        m.categories.SetFocus(true)
+    end if
+    
+    return false
+end function

@@ -1,0 +1,21 @@
+<component name="Thumbnail" extends="Group">
+    <script type="text/brightscript" uri="Thumbnail.bs" />
+    <interface>
+        <field id="itemContent" type="node" />
+    </interface>
+    <children>
+        <Rectangle
+            id="thumbnailBackground"
+            width="192"
+            height="341"
+            color="#FFFFFF"
+            opacity="0.2"
+        />
+        <Poster
+            id="thumbnailPoster"
+            width="192"
+            height="341"
+            uri="https://m.media-amazon.com/images/M/MV5BOGNhMjg2ZjgtYzk4Ni00MTViLTg1MmUtYzM2MDZiYjZlMmU3XkEyXkFqcGc@._V1_.jpg"
+        />
+    </children>    
+</component>

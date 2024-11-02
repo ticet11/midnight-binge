@@ -1,0 +1,38 @@
+import "pkg:/source/roku_modules/rokurequests/Requests.brs"
+
+const EndpointUrl = "https://raw.githubusercontent.com/arturocuya/midnight-binge/master/movies-data.json"
+
+sub init()
+    m.top.functionName = "execute"
+end sub
+
+sub execute()
+    response = rokurequests_Requests().get(EndpointUrl, {
+        timeout: 1000,
+        useCache: true
+    })
+
+    if (response.statusCode <> 200)
+        m.top.output = CreateObject("roSGNode", "ContentNode")
+        return
+    end if
+
+    content = CreateObject("roSGNode", "ContentNode")
+
+    row = content.CreateChild("ContentNode")
+
+    category = LCase(m.top.categoryInput)
+    movieCategories = response.json[category]
+
+    if (movieCategories = invalid)
+        m.top.output = CreateObject("roSGNode", "ContentNode")
+        return
+    end if
+
+    for each movie in movieCategories
+        node = row.CreateChild("ContentNode")
+        node.AddFields(movie)
+    end for
+
+    m.top.output = content
+end sub

@@ -8,7 +8,7 @@ end enum
 
 sub init()
     categories = m.top.CreateChild("ButtonGroup")
-    categories.translation = [50, 300]
+    categories.translation = [10, 306]
 
     categories.buttons = [
         MovieCategory.Action,

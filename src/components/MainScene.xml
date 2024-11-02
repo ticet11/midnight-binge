@@ -18,13 +18,50 @@
                 width="341"
                 height="192"
                 color="#FFFFFF"
-                opacity="0.1"
+                opacity="0.2"
             />
             <Poster
                 id="thumbnailPoster"
                 width="341"
                 height="192"
                 uri="https://res.cloudinary.com/dmaxfkrjg/image/upload/v1724903259/indianajones-thumbnail_kjsxkt.png"
+            />
+        </Group>
+        <Group
+            id="movieShowcase"
+            translation="[549, 0]"
+        >
+            <Label
+                id="movieShowcase__title"
+                text="Raiders of the Lost Ark"
+                width="399"
+                wrap="true"
+                translation="[0, 20]"
+            >
+                <Font role="font" size="59" uri="font:SystemFontFile"></Font>
+            </Label>
+            <Label
+                id="movieShowcase__directedBy"
+                text="Directed by: Steven Spielsborgson"
+                translation="[0,400]"
+                width="399"
+                wrap="true"
+            >
+            </Label>
+            <Rectangle
+                id="frameBackground"
+                width="900"
+                height="549"
+                translation="[468, 0]"
+                color="#FFFFFF"
+                opacity=".02"
+            />
+            <Poster
+                id="movieShowcase__framePoster"
+                width="900"
+                height="549"
+                uri="https://m.media-amazon.com/images/M/MV5BMTY4OTExMTc1Ml5BMl5BanBnXkFtZTcwNDA1MzA4NA@@._V1_.jpg"
+                translation="[468, 0]"
             />
         </Group>
     </children>

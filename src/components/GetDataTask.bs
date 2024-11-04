@@ -1,10 +1,21 @@
 import "pkg:/source/roku_modules/rokurequests/Requests.brs"
+import "pkg:/source/roku_modules/promises/promises.brs"
 
 const EndpointUrl = "https://raw.githubusercontent.com/arturocuya/midnight-binge/master/movies-data.json"
 
 sub init()
     m.top.functionName = "execute"
 end sub
+
+function getPromise(category as string) as object
+    m.promise = promises.create()
+
+    m.category = category
+
+    m.top.control = "RUN"
+
+    return m.promise
+end function
 
 sub execute()
     response = rokurequests_Requests().get(EndpointUrl, {
@@ -13,7 +24,8 @@ sub execute()
     })
 
     if (response.statusCode <> 200)
-        m.top.output = CreateObject("roSGNode", "ContentNode")
+        content = CreateObject("roSGNode", "ContentNode")
+        promises.resolve(content, m.promise)
         return
     end if
 
@@ -21,11 +33,12 @@ sub execute()
 
     row = content.CreateChild("ContentNode")
 
-    category = LCase(m.top.categoryInput)
+    category = LCase(m.category)
     movieCategories = response.json[category]
 
     if (movieCategories = invalid)
-        m.top.output = CreateObject("roSGNode", "ContentNode")
+        content = CreateObject("roSGNode", "ContentNode")
+        promises.resolve(content, m.promise)
         return
     end if
 
@@ -34,5 +47,5 @@ sub execute()
         node.AddFields(movie)
     end for
 
-    m.top.output = content
+    promises.resolve(content, m.promise)
 end sub

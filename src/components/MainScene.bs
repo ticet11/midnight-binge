@@ -1,3 +1,6 @@
+import "pkg:/source/roku_modules/rokurequests/Requests.brs"
+import "pkg:/source/roku_modules/promises/promises.brs"
+
 enum MovieCategory
     Action = "Action"
     Comedy = "Comedy"
@@ -18,6 +21,8 @@ sub init()
         MovieCategory.Horror
     ]
 
+    m.categories.observeField("buttonFocused", "handleCategoryFocused")
+
     m.categories.SetFocus(true)
 
     m.thumbnails = m.top.findNode("thumbnails")
@@ -32,23 +37,25 @@ sub init()
     m.top.signalBeacon("AppLaunchComplete")
 end sub
 
-sub loadCategory(category as string)
-    m.getDataTask = CreateObject("roSGNode", "GetDataTask")
-    m.getDataTask.categoryInput = category
+sub handleCategoryFocused()
+    buttonFocusedIndex = m.categories.buttonFocused
+    categoryFocused = m.categories.buttons[buttonFocusedIndex]
 
-    m.getDataTask.observeField("output", "handleGetDataTaskOutput")
-
-    m.getDataTask.control = "RUN"
+    loadCategory(categoryFocused)
 end sub
 
-sub handleGetDataTaskOutput()
-    output = m.getDataTask.output
-    m.thumbnails.content = output
+sub loadCategory(category as string)
+    m.getDataTask = CreateObject("roSGNode", "GetDataTask")
+    promise = m.getDataTask@.getPromise(category)
 
-    row = output.getChild(0)
-    firstMovie = row.getChild(0)
+    promises.onThen(promise, sub (output as object) 
+        m.thumbnails.content = output
 
-    renderMovieShowcase(firstMovie)
+        row = output.getChild(0)
+        firstMovie = row.getChild(0)
+
+        renderMovieShowcase(firstMovie)
+    end sub)
 end sub
 
 sub handleThumbnailChange()
